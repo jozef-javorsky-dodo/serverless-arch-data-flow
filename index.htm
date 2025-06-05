@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Ultimate Serverless Data Flow Visualizer :: github.com/jozef-javorsky-dodo
+    </title>
+    <meta name="author" content="github.com/jozef-javorsky-dodo" />
+    <meta
+      name="description"
+      content="The definitive hyper-interactive, device-agnostic, purely front-end SPA visualizing conceptual serverless architecture data flows. Explore dynamic, simulated data movements with an unparalleled UI/UX."
+    />
+    <meta
+      name="keywords"
+      content="serverless, architecture, data flow, visualization, spa, frontend, interactive, animation, cloud, aws, gcp, azure, lambda, functions, canvas, ui, ux, jozef javorsky"
+    />
+    <meta
+      property="og:title"
+      content="Ultimate Serverless Data Flow Visualizer"
+    />
+    <meta
+      property="og:description"
+      content="A hyper-interactive, purely front-end SPA visualizing conceptual serverless architecture data flows."
+    />
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:url"
+      content="https://serverless-arch-data-flow.web.app"
+    />
+    <meta
+      name="theme-color"
+      media="(prefers-color-scheme: light)"
+      content="#007BFF"
+    />
+    <meta
+      name="theme-color"
+      media="(prefers-color-scheme: dark)"
+      content="#BB86FC"
+    />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; font-src 'self' https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self' 'unsafe-inline'; img-src 'self' data:; object-src 'none'; frame-src 'none'; connect-src 'none';"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Segoe+UI:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌌</text></svg>"
+    />
+    <style>
+      :root {
+        --font-primary: "Segoe UI", sans-serif;
+        --font-secondary: "Inter", sans-serif;
+        --bg-main-light: #f8f9fa;
+        --bg-canvas-light: #e9ecef;
+        --bg-controls-light: #dee2e6;
+        --text-primary-light: #212529;
+        --text-secondary-light: #495057;
+        --header-bg-light: #007bff;
+        --header-text-light: #ffffff;
+        --nav-link-light: #ffffff;
+        --nav-link-hover-light: #e0e0e0;
+        --button-bg-light: #28a745;
+        --button-hover-bg-light: #1e7e34;
+        --button-text-light: #ffffff;
+        --node-color-light: #007bff;
+        --node-active-color-light: #ffc107;
+        --node-text-color-light: #ffffff;
+        --connection-color-light: #adb5bd;
+        --particle-color-light: #fd7e14;
+        --shadow-color-light: rgba(0, 0, 0, 0.12);
+        --focus-ring-color-light: #0069d9;
+        --bg-main-dark: #121212;
+        --bg-canvas-dark: #1e1e1e;
+        --bg-controls-dark: #2c2c2c;
+        --text-primary-dark: #e0e0e0;
+        --text-secondary-dark: #b0b0b0;
+        --header-bg-dark: #bb86fc;
+        --header-text-dark: #121212;
+        --nav-link-dark: #121212;
+        --nav-link-hover-dark: #000000;
+        --button-bg-dark: #03dac6;
+        --button-hover-bg-dark: #00bfa5;
+        --button-text-dark: #000000;
+        --node-color-dark: #bb86fc;
+        --node-active-color-dark: #cf6679;
+        --node-text-color-dark: #000000;
+        --connection-color-dark: #424242;
+        --particle-color-dark: #fce251;
+        --shadow-color-dark: rgba(0, 0, 0, 0.55);
+        --focus-ring-color-dark: #03dac6;
+        --border-radius: 10px;
+        --spacing-unit: 1rem;
+      }
+      html[data-theme="light"] {
+        --bg-main: var(--bg-main-light);
+        --bg-canvas: var(--bg-canvas-light);
+        --bg-controls: var(--bg-controls-light);
+        --text-primary: var(--text-primary-light);
+        --text-secondary: var(--text-secondary-light);
+        --header-bg: var(--header-bg-light);
+        --header-text: var(--header-text-light);
+        --nav-link: var(--nav-link-light);
+        --nav-link-hover: var(--nav-link-hover-light);
+        --button-bg: var(--button-bg-light);
+        --button-hover-bg: var(--button-hover-bg-light);
+        --button-text: var(--button-text-light);
+        --node-color: var(--node-color-light);
+        --node-active-color: var(--node-active-color-light);
+        --node-text-color: var(--node-text-color-light);
+        --connection-color: var(--connection-color-light);
+        --particle-color: var(--particle-color-light);
+        --shadow-color: var(--shadow-color-light);
+        --focus-ring-color: var(--focus-ring-color-light);
+      }
+      html[data-theme="dark"] {
+        --bg-main: var(--bg-main-dark);
+        --bg-canvas: var(--bg-canvas-dark);
+        --bg-controls: var(--bg-controls-dark);
+        --text-primary: var(--text-primary-dark);
+        --text-secondary: var(--text-secondary-dark);
+        --header-bg: var(--header-bg-dark);
+        --header-text: var(--header-text-dark);
+        --nav-link: var(--nav-link-dark);
+        --nav-link-hover: var(--nav-link-hover-dark);
+        --button-bg: var(--button-bg-dark);
+        --button-hover-bg: var(--button-hover-bg-dark);
+        --button-text: var(--button-text-dark);
+        --node-color: var(--node-color-dark);
+        --node-active-color: var(--node-active-color-dark);
+        --node-text-color: var(--node-text-color-dark);
+        --connection-color: var(--connection-color-dark);
+        --particle-color: var(--particle-color-dark);
+        --shadow-color: var(--shadow-color-dark);
+        --focus-ring-color: var(--focus-ring-color-dark);
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      html {
+        font-size: 16px;
+        scroll-behavior: smooth;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        background-color: var(--bg-main);
+        color: var(--text-primary);
+      }
+      body {
+        font-family: var(--font-primary), var(--font-secondary);
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        height: 100vh;
+        overflow: hidden;
+        transition: background-color 0.3s ease, color 0.3s ease;
+        text-rendering: optimizeLegibility;
+      }
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+      header {
+        background-color: var(--header-bg);
+        color: var(--header-text);
+        padding: calc(var(--spacing-unit) * 0.8) var(--spacing-unit);
+        text-align: center;
+        box-shadow: 0 4px 12px var(--shadow-color);
+        z-index: 1000;
+        flex-shrink: 0;
+        transition: background-color 0.3s ease, color 0.3s ease;
+      }
+      header h1 {
+        margin: 0 0 calc(var(--spacing-unit) * 0.5) 0;
+        font-size: clamp(1.5rem, 4vw, 2rem);
+        font-weight: 700;
+        letter-spacing: -0.025em;
+      }
+      nav ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: clamp(1.2rem, 3.5vw, 2.2rem);
+      }
+      nav ul li a {
+        color: var(--nav-link);
+        text-decoration: none;
+        font-size: clamp(0.85rem, 1.8vw, 1rem);
+        font-weight: 600;
+        transition: color 0.2s ease-in-out, transform 0.15s ease,
+          text-shadow 0.2s ease;
+        padding: 0.35rem 0.25rem;
+        border-radius: 5px;
+        display: inline-block;
+        position: relative;
+      }
+      nav ul li a:hover {
+        color: var(--nav-link-hover);
+        transform: translateY(-2.5px) scale(1.02);
+        text-shadow: 0 0 6px var(--nav-link-hover);
+      }
+      nav ul li a::after {
+        content: "";
+        position: absolute;
+        width: 0;
+        height: 2px;
+        bottom: -5px;
+        left: 50%;
+        background-color: var(--nav-link-hover);
+        transition: width 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+          left 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      }
+      nav ul li a:hover::after {
+        width: 100%;
+        left: 0;
+      }
+      nav ul li a:focus-visible {
+        color: var(--nav-link-hover);
+        outline: 2.5px solid var(--focus-ring-color);
+        outline-offset: 4px;
+        text-decoration: none;
+        transform: scale(1.02);
+      }
+      .visually-hidden {
+        border: 0;
+        clip: rect(0 0 0 0);
+        height: 1px;
+        margin: -1px;
+        overflow: hidden;
+        padding: 0;
+        position: absolute;
+        width: 1px;
+        white-space: nowrap;
+      }
+      .controls-panel {
+        background-color: var(--bg-controls);
+        padding: calc(var(--spacing-unit) * 0.9);
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: stretch;
+        gap: calc(var(--spacing-unit) * 0.9);
+        box-shadow: 0 4px 12px var(--shadow-color);
+        z-index: 500;
+        flex-shrink: 0;
+        transition: background-color 0.3s ease;
+        border-bottom: 1px solid var(--connection-color);
+      }
+      .controls-panel button,
+      .theme-toggle-button {
+        color: var(--button-text);
+        border: none;
+        padding: calc(var(--spacing-unit) * 0.7) calc(var(--spacing-unit) * 1.4);
+        font-size: 0.9rem;
+        font-weight: 600;
+        border-radius: var(--border-radius);
+        cursor: pointer;
+        transition: background-image 0.3s ease, background-color 0.3s ease,
+          transform 0.18s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+          box-shadow 0.2s ease;
+        box-shadow: 0 3px 7px rgba(0, 0, 0, 0.25);
+        letter-spacing: 0.03em;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        min-height: 44px;
+        line-height: 1.4;
+      }
+      .controls-panel button {
+        background-image: linear-gradient(
+          140deg,
+          var(--button-bg) 0%,
+          var(--button-hover-bg) 100%
+        );
+      }
+      .theme-toggle-button {
+        background-color: var(--nav-link);
+        min-width: 140px;
+      }
+      .controls-panel button:hover,
+      .theme-toggle-button:hover {
+        transform: translateY(-3.5px) scale(1.04);
+        box-shadow: 0 7px 15px rgba(0, 0, 0, 0.35);
+      }
+      .theme-toggle-button:hover {
+        background-color: var(--nav-link-hover);
+      }
+      .controls-panel button:focus-visible,
+      .theme-toggle-button:focus-visible {
+        outline: 3px solid var(--focus-ring-color);
+        outline-offset: 3px;
+        box-shadow: 0 0 0 3px var(--bg-controls),
+          0 0 0 6px var(--focus-ring-color);
+      }
+      .controls-panel button:active,
+      .theme-toggle-button:active {
+        transform: translateY(0px) scale(0.97);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+      }
+      main {
+        flex-grow: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: var(--spacing-unit);
+        overflow: hidden;
+        position: relative;
+        animation: fadeIn 0.5s ease-in-out;
+      }
+      #visualizationCanvas {
+        background-color: var(--bg-canvas);
+        border-radius: var(--border-radius);
+        box-shadow: 0 0 35px var(--shadow-color);
+        display: block;
+        transition: background-color 0.3s ease;
+      }
+      footer {
+        background-color: var(--bg-controls);
+        color: var(--text-secondary);
+        text-align: center;
+        padding: calc(var(--spacing-unit) * 0.7);
+        font-size: 0.85rem;
+        border-top: 1px solid var(--connection-color);
+        flex-shrink: 0;
+        transition: background-color 0.3s ease, color 0.3s ease;
+      }
+      noscript {
+        display: block;
+        padding: 2em;
+        margin: 1em;
+        border-radius: var(--border-radius);
+        text-align: center;
+        background-color: var(--button-hover-bg);
+        color: var(--button-text);
+        font-weight: bold;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.001s !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.001s !important;
+          scroll-behavior: auto !important;
+        }
+        main {
+          animation: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header role="banner">
+      <h1>Serverless Architecture Data Flow Visualizer</h1>
+      <nav role="navigation" aria-label="Author Links">
+        <ul>
+          <li>
+            <a
+              href="https://github.com/jozef-javorsky-dodo"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Jozef Javorsky's GitHub Profile (opens in new tab)"
+              >GitHub <span class="visually-hidden">(opens in new tab)</span></a
+            >
+          </li>
+          <li>
+            <a
+              href="https://g.dev/jozef-javorsky-dodo"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Jozef Javorsky's Google Developer Profile (opens in new tab)"
+              >Google Dev
+              <span class="visually-hidden">(opens in new tab)</span></a
+            >
+          </li>
+          <li>
+            <a
+              href="mailto:jozef.javorsky.dodo@gmail.com"
+              aria-label="Email Jozef Javorsky"
+              >Email</a
+            >
+          </li>
+        </ul>
+      </nav>
+    </header>
+    <section class="controls-panel" aria-labelledby="controls-heading">
+      <h2 id="controls-heading" class="visually-hidden">Simulation Controls</h2>
+      <button
+        id="triggerApiRequest"
+        aria-label="Trigger API Request Data Flow. Simulates a client request to an API, processed by functions and a database."
+      >
+        Simulate API Request
+      </button>
+      <button
+        id="triggerFileUpload"
+        aria-label="Trigger File Upload Data Flow. Simulates a file upload, authenticated, stored, and processed asynchronously."
+      >
+        Simulate File Upload
+      </button>
+      <button
+        id="triggerScheduledTask"
+        aria-label="Trigger Scheduled Task Data Flow. Simulates a scheduled task, e.g., report generation."
+      >
+        Simulate Scheduled Task
+      </button>
+      <button
+        id="triggerAsyncProcessing"
+        aria-label="Trigger Asynchronous Data Processing Flow. Simulates event-driven async workflow."
+      >
+        Simulate Async Processing
+      </button>
+      <button
+        id="themeToggleButton"
+        class="theme-toggle-button"
+        aria-label="Toggle color theme"
+        aria-pressed="false"
+      ></button>
+    </section>
+    <main role="main">
+      <canvas
+        id="visualizationCanvas"
+        role="img"
+        aria-label="Interactive canvas visualizing conceptual serverless architecture data flows. Shows components like API Gateways, Functions, Databases, and Storage. Animated particles represent simulated data moving between them when a flow is triggered. The canvas is dynamically sized."
+      ></canvas>
+    </main>
+    <footer role="contentinfo">
+      <p>
+        © <span id="currentYear"></span> Jozef Javorsky. All Rights Reserved.
+      </p>
+    </footer>
+    <noscript>
+      <p>
+        This interactive visualization requires JavaScript to function. Please
+        enable JavaScript in your browser and refresh the page to experience the
+        dynamic data flow depiction.
+      </p>
+    </noscript>
+    <script type="module">
+      const canvas = document.getElementById("visualizationCanvas");
+      if (!canvas || typeof canvas.getContext !== "function") {
+        const mainEl = document.querySelector("main");
+        if (mainEl) {
+          mainEl.innerHTML =
+            '<p style="text-align:center; padding:2em; font-size:1.2em; color: #f56565; background: #4a5568; border: 1px solid #e53e3e; border-radius: 8px;">Your browser does not support HTML5 Canvas, which is essential for this visualization to operate. Please try a modern browser.</p>';
+        }
+        throw new DOMException(
+          "HTML5 Canvas not supported by this browser.",
+          "NotSupportedError"
+        );
+      }
+      const ctx = canvas.getContext("2d", {
+        alpha: false,
+        desynchronized: true,
+      });
+      const CONFIG = {
+        NODE: {
+          RADIUS: 37,
+          PULSE_DURATION: 800,
+          FADE_IN_DURATION: 300,
+          BASE_OPACITY: 0.9,
+          LINE_WIDTH: 2.5,
+        },
+        PARTICLE: { RADIUS: 5.8, BASE_SPEED: 0.01, TAIL_LENGTH: 8 },
+      };
+      let nodes = {};
+      let definedFlows = {};
+      let activeParticles = [];
+      let themeCache = {};
+      let dpr = window.devicePixelRatio || 1;
+      let animationFrameId;
+      let needsRedraw = true;
+      let particleSpeedMultiplier = 1.0;
+      const easing = {
+        easeInOutCubic: (t) =>
+          t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2,
+      };
+      const hexToRgb = (hex) => {
+        const r = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+        return r
+          ? {
+              r: parseInt(r[1], 16),
+              g: parseInt(r[2], 16),
+              b: parseInt(r[3], 16),
+            }
+          : null;
+      };
+      const getPointOnQuadraticBezier = (t, p0, p1, p2) => ({
+        x: (1 - t) ** 2 * p0.x + 2 * (1 - t) * t * p1.x + t ** 2 * p2.x,
+        y: (1 - t) ** 2 * p0.y + 2 * (1 - t) * t * p1.y + t ** 2 * p2.y,
+      });
+      const getQuadraticBezierAngle = (t, p0, p1, p2) => {
+        const dx = 2 * (1 - t) * (p1.x - p0.x) + 2 * t * (p2.x - p1.x);
+        const dy = 2 * (1 - t) * (p1.y - p0.y) + 2 * t * (p2.y - p1.y);
+        return Math.atan2(dy, dx);
+      };
+      const getControlPoint = (fromNode, toNode) => {
+        const midX = (fromNode.x + toNode.x) / 2;
+        const midY = (fromNode.y + toNode.y) / 2;
+        const dx = toNode.x - fromNode.x;
+        const dy = toNode.y - fromNode.y;
+        const dist = Math.hypot(dx, dy);
+        const curveIntensity = Math.min(dist * 0.2, 80);
+        return {
+          x: midX - dy * (curveIntensity / dist),
+          y: midY + dx * (curveIntensity / dist),
+        };
+      };
+      const createThemeCache = () => {
+        const style = getComputedStyle(document.documentElement);
+        themeCache = {
+          nodeColor: style.getPropertyValue("--node-color").trim(),
+          nodeActiveColor: style.getPropertyValue("--node-active-color").trim(),
+          nodeTextColor: style.getPropertyValue("--node-text-color").trim(),
+          connectionColor: style.getPropertyValue("--connection-color").trim(),
+          particleColor: style.getPropertyValue("--particle-color").trim(),
+          bgColor: style.getPropertyValue("--bg-canvas").trim(),
+          fontStyle: `bold 8.5px ${style
+            .getPropertyValue("--font-secondary")
+            .trim()}`,
+          iconFontStyle: `17px ${style
+            .getPropertyValue("--font-primary")
+            .trim()}`,
+        };
+        themeCache.rgbParticleColor = hexToRgb(themeCache.particleColor);
+        themeCache.rgbNodeColor = hexToRgb(themeCache.nodeColor);
+        themeCache.rgbNodeActiveColor = hexToRgb(themeCache.nodeActiveColor);
+      };
+      const setupDynamicSizingAndArchitecture = () => {
+        const mainElement = document.querySelector("main");
+        if (!mainElement) return;
+        const mainStyle = getComputedStyle(mainElement);
+        const paddingX =
+          parseFloat(mainStyle.paddingLeft || "0") +
+          parseFloat(mainStyle.paddingRight || "0");
+        const paddingY =
+          parseFloat(mainStyle.paddingTop || "0") +
+          parseFloat(mainStyle.paddingBottom || "0");
+        const availableWidth = Math.max(
+          320,
+          mainElement.clientWidth - paddingX
+        );
+        const availableHeight = Math.max(
+          240,
+          mainElement.clientHeight - paddingY
+        );
+        const contentAspectRatio = 16 / 9;
+        let canvasRenderWidth = availableWidth;
+        let canvasRenderHeight = availableWidth / contentAspectRatio;
+        if (canvasRenderHeight > availableHeight) {
+          canvasRenderHeight = availableHeight;
+          canvasRenderWidth = canvasRenderHeight * contentAspectRatio;
+        }
+        const finalRenderWidth = Math.floor(canvasRenderWidth);
+        const finalRenderHeight = Math.floor(canvasRenderHeight);
+        canvas.style.width = `${finalRenderWidth}px`;
+        canvas.style.height = `${finalRenderHeight}px`;
+        const newCanvasDrawingWidth = Math.round(finalRenderWidth * dpr);
+        const newCanvasDrawingHeight = Math.round(finalRenderHeight * dpr);
+        if (
+          canvas.width !== newCanvasDrawingWidth ||
+          canvas.height !== newCanvasDrawingHeight
+        ) {
+          canvas.width = newCanvasDrawingWidth;
+          canvas.height = newCanvasDrawingHeight;
+        }
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = "high";
+        const w = finalRenderWidth;
+        const h = finalRenderHeight;
+        const oldNodes = { ...nodes };
+        nodes = {
+          client: { x: w * 0.08, y: h * 0.5, label: "Client", icon: "📱" },
+          apiGateway: { x: w * 0.26, y: h * 0.28, label: "API GW", icon: "🛡️" },
+          authFn: { x: w * 0.26, y: h * 0.72, label: "Auth Fn", icon: "🔑" },
+          logicFn: { x: w * 0.47, y: h * 0.28, label: "Logic Fn", icon: "🧠" },
+          database: { x: w * 0.68, y: h * 0.28, label: "Database", icon: "🗄️" },
+          storage: { x: w * 0.47, y: h * 0.72, label: "Storage", icon: "📦" },
+          processingFn: {
+            x: w * 0.68,
+            y: h * 0.72,
+            label: "Process Fn",
+            icon: "⚙️",
+          },
+          scheduler: {
+            x: w * 0.07,
+            y: h * 0.1,
+            label: "Scheduler",
+            icon: "⏰",
+          },
+          reportFn: { x: w * 0.26, y: h * 0.1, label: "Report Fn", icon: "📊" },
+          eventSource: {
+            x: w * 0.93,
+            y: h * 0.1,
+            label: "Event Bus",
+            icon: "⚡",
+          },
+          asyncFn: { x: w * 0.93, y: h * 0.5, label: "Async Wrkr", icon: "💨" },
+          extApi: { x: w * 0.93, y: h * 0.9, label: "Ext. API", icon: "🌍" },
+        };
+        Object.keys(nodes).forEach((key) => {
+          nodes[key].id = key;
+          if (oldNodes[key])
+            nodes[key].isActiveUntil = oldNodes[key].isActiveUntil;
+        });
+        definedFlows = {
+          API_REQUEST: [
+            { from: "client", to: "apiGateway" },
+            { from: "apiGateway", to: "logicFn" },
+            { from: "logicFn", to: "database" },
+            { from: "database", to: "logicFn", isReturn: true },
+            { from: "logicFn", to: "apiGateway", isReturn: true },
+            { from: "apiGateway", to: "client", isReturn: true },
+          ],
+          FILE_UPLOAD: [
+            { from: "client", to: "authFn" },
+            { from: "authFn", to: "storage" },
+            { from: "storage", to: "processingFn", trigger: true },
+            { from: "processingFn", to: "database" },
+          ],
+          SCHEDULED_TASK: [
+            { from: "scheduler", to: "reportFn" },
+            { from: "reportFn", to: "database" },
+            { from: "database", to: "reportFn", isReturn: true },
+            { from: "reportFn", to: "storage" },
+          ],
+          ASYNC_PROCESSING: [
+            { from: "eventSource", to: "asyncFn" },
+            { from: "asyncFn", to: "logicFn" },
+            { from: "logicFn", to: "extApi" },
+            { from: "extApi", to: "logicFn", isReturn: true },
+            { from: "logicFn", to: "database" },
+          ],
+        };
+        activeParticles.forEach((p) => {
+          p.source = nodes[p.source.id];
+          p.target = nodes[p.target.id];
+          p.control = getControlPoint(p.source, p.target);
+        });
+        requestRedraw();
+      };
+      const drawNode = (node) => {
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(node.x, node.y, CONFIG.NODE.RADIUS, 0, Math.PI * 2);
+        let currentFill = themeCache.nodeColor;
+        let currentLineWidth = CONFIG.NODE.LINE_WIDTH;
+        if (node.isActiveUntil && node.isActiveUntil > performance.now()) {
+          const timeActive =
+            CONFIG.NODE.PULSE_DURATION -
+            (node.isActiveUntil - performance.now());
+          const pulseProgress = Math.sin(
+            (timeActive / CONFIG.NODE.PULSE_DURATION) * Math.PI
+          );
+          const { r: r1, g: g1, b: b1 } = themeCache.rgbNodeColor;
+          const { r: r2, g: g2, b: b2 } = themeCache.rgbNodeActiveColor;
+          currentFill = `rgb(${Math.round(
+            r1 + (r2 - r1) * pulseProgress
+          )}, ${Math.round(g1 + (g2 - g1) * pulseProgress)}, ${Math.round(
+            b1 + (b2 - b1) * pulseProgress
+          )})`;
+          currentLineWidth += pulseProgress * 2.5;
+        }
+        ctx.fillStyle = currentFill;
+        ctx.fill();
+        ctx.strokeStyle = themeCache.nodeTextColor;
+        ctx.lineWidth = currentLineWidth;
+        ctx.shadowColor =
+          node.isActiveUntil && node.isActiveUntil > performance.now()
+            ? `rgba(${themeCache.rgbParticleColor.r},${themeCache.rgbParticleColor.g},${themeCache.rgbParticleColor.b},0.5)`
+            : "rgba(0,0,0,0.3)";
+        ctx.shadowBlur =
+          currentLineWidth > CONFIG.NODE.LINE_WIDTH ? currentLineWidth * 3 : 7;
+        ctx.stroke();
+        ctx.shadowColor = "transparent";
+        ctx.fillStyle = themeCache.nodeTextColor;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.font = themeCache.iconFontStyle;
+        ctx.fillText(node.icon, node.x, node.y - CONFIG.NODE.RADIUS * 0.42);
+        ctx.font = themeCache.fontStyle;
+        ctx.fillText(node.label, node.x, node.y + CONFIG.NODE.RADIUS * 0.33);
+        ctx.restore();
+      };
+      const drawConnection = (fromNode, toNode, isTrigger, isReturn) => {
+        ctx.save();
+        const controlPoint = getControlPoint(fromNode, toNode);
+        ctx.beginPath();
+        ctx.moveTo(fromNode.x, fromNode.y);
+        ctx.quadraticCurveTo(
+          controlPoint.x,
+          controlPoint.y,
+          toNode.x,
+          toNode.y
+        );
+        ctx.strokeStyle = themeCache.connectionColor;
+        ctx.lineWidth = isTrigger
+          ? 2.0
+          : isReturn
+          ? CONFIG.NODE.LINE_WIDTH - 0.8
+          : CONFIG.NODE.LINE_WIDTH;
+        if (isTrigger) ctx.setLineDash([6, 6]);
+        else if (isReturn) ctx.setLineDash([4, 4]);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        const endT =
+          1.0 -
+          CONFIG.NODE.RADIUS /
+            Math.hypot(toNode.x - controlPoint.x, toNode.y - controlPoint.y);
+        const arrowTip = getPointOnQuadraticBezier(
+          endT,
+          fromNode,
+          controlPoint,
+          toNode
+        );
+        const angle = getQuadraticBezierAngle(
+          endT,
+          fromNode,
+          controlPoint,
+          toNode
+        );
+        const arrowSize = isReturn ? 7 : 9;
+        ctx.beginPath();
+        ctx.moveTo(arrowTip.x, arrowTip.y);
+        ctx.lineTo(
+          arrowTip.x - arrowSize * Math.cos(angle - Math.PI / 7),
+          arrowTip.y - arrowSize * Math.sin(angle - Math.PI / 7)
+        );
+        ctx.lineTo(
+          arrowTip.x - arrowSize * Math.cos(angle + Math.PI / 7),
+          arrowTip.y - arrowSize * Math.sin(angle + Math.PI / 7)
+        );
+        ctx.closePath();
+        ctx.fillStyle = themeCache.connectionColor;
+        ctx.fill();
+        ctx.restore();
+      };
+      const drawParticle = (particle) => {
+        ctx.save();
+        const fadeInOpacity =
+          Math.min(
+            1.0,
+            (performance.now() - particle.spawnTime) /
+              CONFIG.NODE.FADE_IN_DURATION
+          ) * CONFIG.NODE.BASE_OPACITY;
+        const easedProgress = easing.easeInOutCubic(particle.progress);
+        for (let i = 0; i < CONFIG.PARTICLE.TAIL_LENGTH; i++) {
+          const tailProgress =
+            easedProgress - i * 0.025 * particleSpeedMultiplier;
+          if (tailProgress < 0) continue;
+          const pos = getPointOnQuadraticBezier(
+            tailProgress,
+            particle.source,
+            particle.control,
+            particle.target
+          );
+          const segmentOpacity =
+            (1 - i / CONFIG.PARTICLE.TAIL_LENGTH) ** 1.5 * fadeInOpacity;
+          const segmentRadius =
+            CONFIG.PARTICLE.RADIUS *
+            (1 - (i / CONFIG.PARTICLE.TAIL_LENGTH) ** 0.8);
+          if (segmentRadius < 0.5) continue;
+          ctx.beginPath();
+          ctx.arc(pos.x, pos.y, segmentRadius, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(${themeCache.rgbParticleColor.r}, ${themeCache.rgbParticleColor.g}, ${themeCache.rgbParticleColor.b}, ${segmentOpacity})`;
+          ctx.fill();
+        }
+        ctx.restore();
+      };
+      const renderScene = () => {
+        if (!themeCache.bgColor) return;
+        const { width, height } = canvas;
+        ctx.fillStyle = themeCache.bgColor;
+        ctx.fillRect(0, 0, width / dpr, height / dpr);
+        Object.values(definedFlows).forEach((flowPath) => {
+          flowPath.forEach((segment) => {
+            if (nodes[segment.from] && nodes[segment.to]) {
+              drawConnection(
+                nodes[segment.from],
+                nodes[segment.to],
+                !!segment.trigger,
+                !!segment.isReturn
+              );
+            }
+          });
+        });
+        Object.values(nodes).forEach(drawNode);
+        activeParticles.forEach(drawParticle);
+      };
+      const activateNode = (nodeId) => {
+        if (nodes[nodeId]) {
+          nodes[nodeId].isActiveUntil =
+            performance.now() + CONFIG.NODE.PULSE_DURATION;
+          requestRedraw();
+        }
+      };
+      const updateParticlePositions = () => {
+        if (activeParticles.length === 0) return;
+        let particlesRequireRedraw = false;
+        const effectiveSpeed =
+          CONFIG.PARTICLE.BASE_SPEED * particleSpeedMultiplier;
+        for (let i = activeParticles.length - 1; i >= 0; i--) {
+          const particle = activeParticles[i];
+          particle.progress += effectiveSpeed;
+          particlesRequireRedraw = true;
+          if (particle.progress >= 1.0) {
+            particle.progress = 1.0;
+            activateNode(particle.path[particle.currentSegment].to);
+            particle.currentSegment++;
+            if (particle.currentSegment >= particle.path.length) {
+              activeParticles.splice(i, 1);
+            } else {
+              const nextSegment = particle.path[particle.currentSegment];
+              if (!nodes[nextSegment.from] || !nodes[nextSegment.to]) {
+                activeParticles.splice(i, 1);
+                continue;
+              }
+              particle.source = nodes[nextSegment.from];
+              particle.target = nodes[nextSegment.to];
+              particle.control = getControlPoint(
+                particle.source,
+                particle.target
+              );
+              particle.progress = 0;
+              activateNode(nextSegment.from);
+            }
+          }
+        }
+        if (particlesRequireRedraw) requestRedraw();
+      };
+      const requestRedraw = () => {
+        needsRedraw = true;
+      };
+      const animationLoop = () => {
+        animationFrameId = requestAnimationFrame(animationLoop);
+        if (document.hidden) return;
+        updateParticlePositions();
+        if (
+          Object.values(nodes).some(
+            (n) => n.isActiveUntil && n.isActiveUntil > performance.now()
+          )
+        )
+          requestRedraw();
+        if (needsRedraw) {
+          if (canvas.width > 0 && canvas.height > 0) renderScene();
+          needsRedraw = false;
+        }
+      };
+      const triggerFlowVisualization = (flowType) => {
+        const path = definedFlows[flowType];
+        if (!path || path.length === 0) return;
+        const startNode = nodes[path[0].from];
+        const endNode = nodes[path[0].to];
+        if (!startNode || !endNode) return;
+        activateNode(startNode.id);
+        activeParticles.push({
+          path: path,
+          currentSegment: 0,
+          source: startNode,
+          target: endNode,
+          control: getControlPoint(startNode, endNode),
+          progress: 0,
+          spawnTime: performance.now(),
+        });
+        requestRedraw();
+      };
+      const bindEventListeners = () => {
+        document
+          .getElementById("triggerApiRequest")
+          .addEventListener("click", () =>
+            triggerFlowVisualization("API_REQUEST")
+          );
+        document
+          .getElementById("triggerFileUpload")
+          .addEventListener("click", () =>
+            triggerFlowVisualization("FILE_UPLOAD")
+          );
+        document
+          .getElementById("triggerScheduledTask")
+          .addEventListener("click", () =>
+            triggerFlowVisualization("SCHEDULED_TASK")
+          );
+        document
+          .getElementById("triggerAsyncProcessing")
+          .addEventListener("click", () =>
+            triggerFlowVisualization("ASYNC_PROCESSING")
+          );
+        document
+          .getElementById("themeToggleButton")
+          .addEventListener("click", toggleTheme);
+      };
+      const setupAccessibility = () => {
+        const reducedMotionQuery = window.matchMedia(
+          "(prefers-reduced-motion: reduce)"
+        );
+        const handleReducedMotionChange = (e) => {
+          particleSpeedMultiplier = e.matches ? 0.1 : 1.0;
+          requestRedraw();
+        };
+        reducedMotionQuery.addEventListener(
+          "change",
+          handleReducedMotionChange
+        );
+        handleReducedMotionChange(reducedMotionQuery);
+        const debouncedResize = (() => {
+          let timeoutId;
+          return () => {
+            clearTimeout(timeoutId);
+            timeoutId = setTimeout(() => {
+              if (document.visibilityState === "visible")
+                setupDynamicSizingAndArchitecture();
+            }, 180);
+          };
+        })();
+        window.addEventListener("resize", debouncedResize);
+        document.addEventListener("visibilitychange", () => {
+          if (document.visibilityState === "visible") {
+            requestRedraw();
+            if (!animationFrameId)
+              animationFrameId = requestAnimationFrame(animationLoop);
+          } else if (animationFrameId) {
+            cancelAnimationFrame(animationFrameId);
+            animationFrameId = null;
+          }
+        });
+      };
+      const safeLocalStorage = (action, key, value) => {
+        try {
+          if (action === "set") localStorage.setItem(key, value);
+          if (action === "get") return localStorage.getItem(key);
+        } catch (e) {
+          console.warn("localStorage is not available.");
+        }
+        return null;
+      };
+      const updateThemeToggleButtonContent = () => {
+        const btn = document.getElementById("themeToggleButton");
+        if (!btn) return;
+        const isDark =
+          document.documentElement.getAttribute("data-theme") === "dark";
+        btn.innerHTML = `<span role="img" aria-hidden="true">${
+          isDark ? "☀️" : "🌙"
+        }</span> To ${isDark ? "Light" : "Dark"} Mode`;
+        btn.setAttribute("aria-pressed", String(isDark));
+      };
+      const toggleTheme = () => {
+        const newTheme =
+          document.documentElement.getAttribute("data-theme") === "dark"
+            ? "light"
+            : "dark";
+        document.documentElement.setAttribute("data-theme", newTheme);
+        safeLocalStorage("set", "visualizerTheme", newTheme);
+        createThemeCache();
+        updateThemeToggleButtonContent();
+        requestRedraw();
+      };
+      const setInitialTheme = () => {
+        const savedTheme = safeLocalStorage("get", "visualizerTheme");
+        const prefersDark =
+          window.matchMedia &&
+          window.matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.setAttribute(
+          "data-theme",
+          savedTheme || (prefersDark ? "dark" : "light")
+        );
+      };
+      const init = () => {
+        setInitialTheme();
+        createThemeCache();
+        updateThemeToggleButtonContent();
+        bindEventListeners();
+        setupAccessibility();
+        document.getElementById("currentYear").textContent =
+          new Date().getFullYear();
+        setupDynamicSizingAndArchitecture();
+        if (animationFrameId) cancelAnimationFrame(animationFrameId);
+        animationFrameId = requestAnimationFrame(animationLoop);
+      };
+      if (document.readyState === "loading")
+        document.addEventListener("DOMContentLoaded", init);
+      else init();
+    </script>
+  </body>
+</html>
